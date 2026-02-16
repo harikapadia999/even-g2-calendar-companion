@@ -1,20 +1,41 @@
 /**
  * Display Type Definitions
- * Optimized for Even G2 640×200 monochrome display
+ * Optimized for Even G2 640×350 monochrome display
+ * 
+ * ACTUAL G2 SPECIFICATIONS:
+ * - Resolution: 640×350 pixels
+ * - Refresh Rate: 60Hz
+ * - Brightness: 1200 nits
+ * - Display: Green Micro-LED with waveguides
+ * - Field of View: 27.5° binocular
+ * - Passthrough: 98%
  */
 
 /**
- * Display Dimensions
+ * Display Dimensions - CORRECTED FOR G2
  */
 export const DISPLAY_DIMENSIONS = {
   WIDTH: 640,
-  HEIGHT: 200,
-  ASPECT_RATIO: 3.2, // 640/200
+  HEIGHT: 350, // CORRECTED
+  ASPECT_RATIO: 1.83,
+  REFRESH_RATE: 60, // CORRECTED
+  BRIGHTNESS_MAX: 1200,
+  FOV: 27.5,
 } as const;
 
 /**
- * Display Region
+ * Predefined Display Regions for Calendar Layout
+ * UPDATED for 640×350 resolution
  */
+export const CALENDAR_LAYOUT = {
+  TITLE: { x: 10, y: 30, width: 620, height: 60 },
+  TIME: { x: 10, y: 110, width: 620, height: 40 },
+  LOCATION: { x: 10, y: 170, width: 620, height: 35 },
+  TIME_UNTIL: { x: 10, y: 225, width: 620, height: 40 },
+  DURATION: { x: 10, y: 285, width: 620, height: 30 },
+  FOOTER: { x: 10, y: 325, width: 620, height: 20 },
+} as const;
+
 export interface DisplayRegion {
   x: number;
   y: number;
@@ -22,39 +43,21 @@ export interface DisplayRegion {
   height: number;
 }
 
-/**
- * Predefined Display Regions for Calendar Layout
- */
-export const CALENDAR_LAYOUT = {
-  TITLE: { x: 10, y: 20, width: 620, height: 40 },
-  TIME: { x: 10, y: 70, width: 620, height: 30 },
-  LOCATION: { x: 10, y: 110, width: 620, height: 25 },
-  TIME_UNTIL: { x: 10, y: 145, width: 620, height: 25 },
-  DURATION: { x: 10, y: 175, width: 620, height: 20 },
-} as const;
-
-/**
- * Font Sizes (in pixels)
- */
 export enum FontSize {
-  SMALL = 14,
-  MEDIUM = 18,
-  LARGE = 24,
-  XLARGE = 32,
+  TINY = 12,
+  SMALL = 16,
+  MEDIUM = 20,
+  LARGE = 28,
+  XLARGE = 36,
+  XXLARGE = 48,
 }
 
-/**
- * Text Style
- */
 export interface TextStyle {
   fontSize: FontSize;
   bold?: boolean;
   alignment?: 'left' | 'center' | 'right';
 }
 
-/**
- * Display Element
- */
 export interface DisplayElement {
   id: string;
   region: DisplayRegion;
@@ -63,29 +66,21 @@ export interface DisplayElement {
   visible: boolean;
 }
 
-/**
- * Calendar Display Layout
- */
 export interface CalendarDisplayLayout {
   title: DisplayElement;
   timeRange: DisplayElement;
   location?: DisplayElement;
   timeUntil: DisplayElement;
   duration?: DisplayElement;
+  footer?: DisplayElement;
 }
 
-/**
- * Display Update Type
- */
 export enum DisplayUpdateType {
-  FULL = 'FULL', // Complete screen refresh
-  PARTIAL = 'PARTIAL', // Update specific regions
-  INCREMENTAL = 'INCREMENTAL', // Only changed elements
+  FULL = 'FULL',
+  PARTIAL = 'PARTIAL',
+  INCREMENTAL = 'INCREMENTAL',
 }
 
-/**
- * Display Update
- */
 export interface DisplayUpdate {
   type: DisplayUpdateType;
   elements: DisplayElement[];
@@ -93,19 +88,13 @@ export interface DisplayUpdate {
   timestamp: Date;
 }
 
-/**
- * Text Wrapping Options
- */
 export interface TextWrappingOptions {
-  maxWidth: number; // pixels
+  maxWidth: number;
   maxLines: number;
-  ellipsis: boolean; // Add "..." if truncated
-  wordWrap: boolean; // Wrap at word boundaries
+  ellipsis: boolean;
+  wordWrap: boolean;
 }
 
-/**
- * Text Measurement
- */
 export interface TextMeasurement {
   width: number;
   height: number;
@@ -113,113 +102,77 @@ export interface TextMeasurement {
   truncated: boolean;
 }
 
-/**
- * Display Renderer Configuration
- */
 export interface DisplayRendererConfig {
   defaultFontSize: FontSize;
-  lineHeight: number; // pixels
-  letterSpacing: number; // pixels
+  lineHeight: number;
+  letterSpacing: number;
   maxCharsPerLine: number;
   maxLines: number;
   enableAntialiasing: boolean;
 }
 
-/**
- * Rendering Performance Metrics
- */
 export interface RenderingMetrics {
-  lastRenderTime: number; // ms
-  averageRenderTime: number; // ms
+  lastRenderTime: number;
+  averageRenderTime: number;
   totalRenders: number;
   failedRenders: number;
   lastUpdate: Date;
 }
 
-/**
- * Display State
- */
 export interface DisplayState {
   isActive: boolean;
-  brightness: number; // 0-100
+  brightness: number;
   autoBrightness: boolean;
   currentLayout: CalendarDisplayLayout | null;
   lastUpdate: Date | null;
   metrics: RenderingMetrics;
 }
 
-/**
- * Display Renderer Interface
- */
 export interface IDisplayRenderer {
-  // Initialization
   initialize(config: DisplayRendererConfig): void;
-  
-  // Layout Management
   createCalendarLayout(
     title: string,
     timeRange: string,
     location?: string,
     timeUntil?: string,
-    duration?: string
+    duration?: string,
+    footer?: string
   ): CalendarDisplayLayout;
-  
-  // Text Processing
   wrapText(text: string, options: TextWrappingOptions): string[];
   measureText(text: string, style: TextStyle): TextMeasurement;
   truncateText(text: string, maxWidth: number, style: TextStyle): string;
-  
-  // Rendering
   renderLayout(layout: CalendarDisplayLayout): DisplayUpdate;
   renderElement(element: DisplayElement): DisplayUpdate;
   clearRegion(region: DisplayRegion): DisplayUpdate;
   clearAll(): DisplayUpdate;
-  
-  // Optimization
   calculateDiff(
     previous: CalendarDisplayLayout | null,
     current: CalendarDisplayLayout
   ): DisplayUpdate;
-  
-  // State
   getState(): DisplayState;
   getMetrics(): RenderingMetrics;
 }
 
-/**
- * Text Formatter Interface
- */
 export interface ITextFormatter {
-  // Date/Time Formatting
   formatTimeRange(start: Date, end: Date, format: '12h' | '24h'): string;
   formatDuration(milliseconds: number): string;
   formatTimeUntil(milliseconds: number): string;
   formatDate(date: Date, format: 'short' | 'medium' | 'long'): string;
-  
-  // Text Processing
   truncate(text: string, maxLength: number, ellipsis?: boolean): string;
   capitalize(text: string): string;
-  removeEmojis(text: string): string; // G2 can't display emojis
-  sanitize(text: string): string; // Remove unsupported characters
-  
-  // Calendar-specific
+  removeEmojis(text: string): string;
+  sanitize(text: string): string;
   formatEventTitle(title: string, maxLength: number): string;
   formatLocation(location: string, maxLength: number): string;
   formatAttendees(attendees: string[], maxLength: number): string;
 }
 
-/**
- * Display Optimization Strategy
- */
 export enum OptimizationStrategy {
-  QUALITY = 'QUALITY', // Best visual quality, slower
-  BALANCED = 'BALANCED', // Balance quality and speed
-  PERFORMANCE = 'PERFORMANCE', // Fastest, minimal quality loss
+  QUALITY = 'QUALITY',
+  BALANCED = 'BALANCED',
+  PERFORMANCE = 'PERFORMANCE',
 }
 
-/**
- * Display Optimization Config
- */
 export interface DisplayOptimizationConfig {
   strategy: OptimizationStrategy;
   enableCaching: boolean;
@@ -228,18 +181,12 @@ export interface DisplayOptimizationConfig {
   updateThrottleMs: number;
 }
 
-/**
- * Bitmap Data (for future graphics support)
- */
 export interface BitmapData {
   width: number;
   height: number;
-  data: Uint8Array; // 1 bit per pixel (monochrome)
+  data: Uint8Array;
 }
 
-/**
- * Icon Type (predefined icons for common elements)
- */
 export enum IconType {
   CALENDAR = 'CALENDAR',
   CLOCK = 'CLOCK',
@@ -249,11 +196,10 @@ export enum IconType {
   PHONE = 'PHONE',
   WARNING = 'WARNING',
   CHECK = 'CHECK',
+  BATTERY = 'BATTERY',
+  WIFI = 'WIFI',
 }
 
-/**
- * Icon Definition
- */
 export interface IconDefinition {
   type: IconType;
   width: number;
@@ -261,24 +207,34 @@ export interface IconDefinition {
   data: Uint8Array;
 }
 
-/**
- * Display Error Types
- */
 export enum DisplayErrorType {
   RENDER_FAILED = 'RENDER_FAILED',
   INVALID_LAYOUT = 'INVALID_LAYOUT',
   TEXT_TOO_LONG = 'TEXT_TOO_LONG',
   REGION_OUT_OF_BOUNDS = 'REGION_OUT_OF_BOUNDS',
   UNSUPPORTED_CHARACTER = 'UNSUPPORTED_CHARACTER',
+  BRIGHTNESS_OUT_OF_RANGE = 'BRIGHTNESS_OUT_OF_RANGE',
   UNKNOWN = 'UNKNOWN',
 }
 
-/**
- * Display Error
- */
 export interface DisplayError {
   type: DisplayErrorType;
   message: string;
   element?: DisplayElement;
   timestamp: Date;
+}
+
+export interface G2DisplayFeatures {
+  autoBrightness: boolean;
+  waveguideMode: 'standard' | 'enhanced';
+  displayDepth: number;
+  edgeEnhancement: boolean;
+}
+
+export interface AdvancedLayoutOptions {
+  enableMultiLine: boolean;
+  maxLinesPerSection: number;
+  sectionSpacing: number;
+  showFooter: boolean;
+  adaptiveFontSize: boolean;
 }

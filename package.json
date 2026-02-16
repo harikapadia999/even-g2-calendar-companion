@@ -9,10 +9,15 @@
     "start": "react-native start",
     "test": "jest",
     "test:coverage": "jest --coverage",
+    "test:watch": "jest --watch",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
+    "lint:fix": "eslint . --ext .js,.jsx,.ts,.tsx --fix",
     "type-check": "tsc --noEmit",
     "build:android": "cd android && ./gradlew assembleRelease",
-    "build:ios": "cd ios && xcodebuild -workspace EvenG2Calendar.xcworkspace -scheme EvenG2Calendar -configuration Release"
+    "build:ios": "cd ios && xcodebuild -workspace EvenG2Calendar.xcworkspace -scheme EvenG2Calendar -configuration Release",
+    "clean": "cd android && ./gradlew clean && cd ../ios && xcodebuild clean",
+    "clean:cache": "npm start -- --reset-cache",
+    "postinstall": "cd ios && pod install && cd .."
   },
   "dependencies": {
     "react": "18.2.0",
@@ -41,6 +46,7 @@
     "@typescript-eslint/eslint-plugin": "^6.19.0",
     "@typescript-eslint/parser": "^6.19.0",
     "babel-jest": "^29.7.0",
+    "babel-plugin-module-resolver": "^5.0.0",
     "eslint": "^8.56.0",
     "jest": "^29.7.0",
     "metro-react-native-babel-preset": "^0.77.0",
@@ -60,7 +66,9 @@
     "calendar",
     "ble",
     "react-native",
-    "typescript"
+    "typescript",
+    "waveguide",
+    "wearable"
   ],
   "author": "Hari Kapadia <harikapadia99@gmail.com>",
   "license": "MIT",
