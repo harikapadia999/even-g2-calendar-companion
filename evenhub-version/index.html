@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calendar Companion - Even G2</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      line-height: 1.6;
+      color: #333;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    .header {
+      background: white;
+      border-radius: 12px;
+      padding: 30px;
+      margin-bottom: 20px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+      text-align: center;
+    }
+
+    .header h1 {
+      color: #667eea;
+      font-size: 2.5em;
+      margin-bottom: 10px;
+    }
+
+    .header p {
+      color: #666;
+      font-size: 1.1em;
+    }
+
+    .badge {
+      display: inline-block;
+      background: #667eea;
+      color: white;
+      padding: 5px 15px;
+      border-radius: 20px;
+      font-size: 0.9em;
+      margin-top: 10px;
+    }
+
+    .content {
+      background: white;
+      border-radius: 12px;
+      padding: 30px;
+      margin-bottom: 20px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    }
+
+    .content h2 {
+      color: #667eea;
+      margin-bottom: 15px;
+      border-bottom: 2px solid #667eea;
+      padding-bottom: 10px;
+    }
+
+    .content h3 {
+      color: #764ba2;
+      margin-top: 20px;
+      margin-bottom: 10px;
+    }
+
+    .content ul {
+      margin-left: 20px;
+      margin-bottom: 15px;
+    }
+
+    .content li {
+      margin-bottom: 8px;
+    }
+
+    .controls {
+      background: #f8f9fa;
+      border-left: 4px solid #667eea;
+      padding: 15px;
+      margin: 15px 0;
+      border-radius: 4px;
+    }
+
+    .controls strong {
+      color: #667eea;
+    }
+
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 15px;
+      margin: 20px 0;
+    }
+
+    .feature-card {
+      background: #f8f9fa;
+      padding: 15px;
+      border-radius: 8px;
+      border-left: 4px solid #764ba2;
+    }
+
+    .feature-card h4 {
+      color: #764ba2;
+      margin-bottom: 8px;
+    }
+
+    .status {
+      background: #e8f5e9;
+      border-left: 4px solid #4caf50;
+      padding: 15px;
+      margin: 15px 0;
+      border-radius: 4px;
+    }
+
+    .warning {
+      background: #fff3e0;
+      border-left: 4px solid #ff9800;
+      padding: 15px;
+      margin: 15px 0;
+      border-radius: 4px;
+    }
+
+    .error {
+      background: #ffebee;
+      border-left: 4px solid #f44336;
+      padding: 15px;
+      margin: 15px 0;
+      border-radius: 4px;
+    }
+
+    code {
+      background: #f4f4f4;
+      padding: 2px 6px;
+      border-radius: 3px;
+      font-family: 'Courier New', monospace;
+      font-size: 0.9em;
+    }
+
+    pre {
+      background: #2d2d2d;
+      color: #f8f8f2;
+      padding: 15px;
+      border-radius: 8px;
+      overflow-x: auto;
+      margin: 15px 0;
+    }
+
+    pre code {
+      background: none;
+      color: inherit;
+      padding: 0;
+    }
+
+    .footer {
+      text-align: center;
+      color: white;
+      padding: 20px;
+      font-size: 0.9em;
+    }
+
+    .footer a {
+      color: white;
+      text-decoration: underline;
+    }
+
+    #app {
+      display: none;
+    }
+
+    @media (max-width: 600px) {
+      .header h1 {
+        font-size: 1.8em;
+      }
+      
+      .feature-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>📅 Calendar Companion</h1>
+      <p>Next Event Display for Even Realities G2 Smart Glasses</p>
+      <span class="badge">Even Hub SDK Version</span>
+    </div>
+
+    <div class="content">
+      <h2>🎯 What is This?</h2>
+      <p>
+        Calendar Companion displays your next upcoming calendar event on your Even G2 smart glasses.
+        It syncs with Google Calendar and automatically updates every 30 seconds, so you always know
+        what's coming up next.
+      </p>
+
+      <div class="feature-grid">
+        <div class="feature-card">
+          <h4>📱 Auto-Sync</h4>
+          <p>Refreshes every 30 seconds</p>
+        </div>
+        <div class="feature-card">
+          <h4>⏰ Time Display</h4>
+          <p>Shows start time & duration</p>
+        </div>
+        <div class="feature-card">
+          <h4>📍 Location</h4>
+          <p>Displays event location</p>
+        </div>
+        <div class="feature-card">
+          <h4>⏳ Countdown</h4>
+          <p>Time until event starts</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="content">
+      <h2>🎮 Controls</h2>
+      
+      <div class="controls">
+        <strong>Scroll Down:</strong> Open menu<br>
+        <strong>Scroll Up/Down (in menu):</strong> Navigate options<br>
+        <strong>Single Tap:</strong> Select / Refresh<br>
+        <strong>Double Tap:</strong> Open menu / Go back
+      </div>
+
+      <h3>Menu Options</h3>
+      <ul>
+        <li><strong>Refresh Now:</strong> Manually sync calendar</li>
+        <li><strong>Settings:</strong> Configure display preferences</li>
+        <li><strong>View All Events:</strong> See upcoming events</li>
+        <li><strong>Toggle Debug:</strong> Show/hide debug info</li>
+        <li><strong>Exit:</strong> Close the app</li>
+      </ul>
+    </div>
+
+    <div class="content">
+      <h2>🚀 Getting Started</h2>
+
+      <h3>Prerequisites</h3>
+      <ul>
+        <li>Even Realities G2 smart glasses</li>
+        <li>Even Hub app installed on your phone</li>
+        <li>Google Calendar account</li>
+        <li>Google Cloud Console project with Calendar API enabled</li>
+      </ul>
+
+      <h3>Setup Steps</h3>
+      
+      <div class="warning">
+        <strong>⚠️ Important:</strong> This app requires Google Calendar API credentials.
+        You need to create a Google Cloud Console project and enable the Calendar API.
+      </div>
+
+      <ol>
+        <li>
+          <strong>Create Google Cloud Project:</strong>
+          <ul>
+            <li>Go to <a href="https://console.cloud.google.com" target="_blank">Google Cloud Console</a></li>
+            <li>Create a new project</li>
+            <li>Enable Google Calendar API</li>
+            <li>Create OAuth 2.0 credentials (Web application)</li>
+            <li>Add authorized JavaScript origins</li>
+          </ul>
+        </li>
+        <li>
+          <strong>Configure Environment:</strong>
+          <pre><code># Create .env file
+VITE_GOOGLE_CLIENT_ID=your_client_id_here
+VITE_GOOGLE_API_KEY=your_api_key_here</code></pre>
+        </li>
+        <li>
+          <strong>Install Dependencies:</strong>
+          <pre><code>npm install</code></pre>
+        </li>
+        <li>
+          <strong>Run Development Server:</strong>
+          <pre><code>npm run dev</code></pre>
+        </li>
+        <li>
+          <strong>Test in Even Hub Simulator:</strong>
+          <pre><code># Install simulator
+npm install -g @evenrealities/evenhub-simulator
+
+# Run simulator
+evenhub-simulator</code></pre>
+        </li>
+        <li>
+          <strong>Deploy to Even Hub:</strong>
+          <pre><code># Build production version
+npm run build
+
+# Deploy using Even Hub CLI
+npm install -g @evenrealities/evenhub-cli
+evenhub-cli deploy</code></pre>
+        </li>
+      </ol>
+    </div>
+
+    <div class="content">
+      <h2>🛠️ Development</h2>
+
+      <h3>Project Structure</h3>
+      <pre><code>evenhub-version/
+├── src/
+│   ├── services/
+│   │   ├── evenhub-bridge.ts      # Even Hub SDK wrapper
+│   │   ├── calendar-service.ts    # Google Calendar integration
+│   │   └── display-composer.ts    # Display formatting
+│   ├── state/
+│   │   └── store.ts               # State management
+│   ├── input/
+│   │   └── event-mapper.ts        # Input event handling
+│   ├── types/
+│   │   ├── calendar.types.ts      # Calendar types
+│   │   ├── display.types.ts       # Display types
+│   │   └── state.types.ts         # State types
+│   ├── utils/
+│   │   └── format-utils.ts        # Formatting utilities
+│   ├── app.ts                     # Main application
+│   └── main.ts                    # Entry point
+├── index.html                     # This file
+├── package.json
+├── tsconfig.json
+└── vite.config.ts</code></pre>
+
+      <h3>Available Scripts</h3>
+      <ul>
+        <li><code>npm run dev</code> - Start development server</li>
+        <li><code>npm run build</code> - Build for production</li>
+        <li><code>npm run preview</code> - Preview production build</li>
+        <li><code>npm run lint</code> - Run ESLint</li>
+        <li><code>npm run type-check</code> - Check TypeScript types</li>
+        <li><code>npm test</code> - Run tests</li>
+      </ul>
+    </div>
+
+    <div class="content">
+      <h2>📚 Resources</h2>
+      <ul>
+        <li><a href="https://www.npmjs.com/package/@evenrealities/even_hub_sdk" target="_blank">Even Hub SDK Documentation</a></li>
+        <li><a href="https://www.npmjs.com/package/@evenrealities/evenhub-simulator" target="_blank">Even Hub Simulator</a></li>
+        <li><a href="https://www.npmjs.com/package/@evenrealities/evenhub-cli" target="_blank">Even Hub CLI Tool</a></li>
+        <li><a href="https://developers.google.com/calendar/api/guides/overview" target="_blank">Google Calendar API</a></li>
+        <li><a href="https://github.com/dmyster145/EvenChess" target="_blank">EvenChess Reference Implementation</a></li>
+      </ul>
+    </div>
+
+    <div class="content">
+      <h2>⚙️ Technical Details</h2>
+
+      <h3>Display Specifications</h3>
+      <ul>
+        <li><strong>Resolution:</strong> 576×288 pixels (Even Hub SDK coordinates)</li>
+        <li><strong>Actual Hardware:</strong> 640×350 pixels</li>
+        <li><strong>Color:</strong> Monochrome (1-bit black/white)</li>
+        <li><strong>Image Containers:</strong> Max 200×100 pixels each</li>
+        <li><strong>Refresh Rate:</strong> 60Hz</li>
+      </ul>
+
+      <h3>Architecture</h3>
+      <p>
+        This app uses the official Even Hub SDK instead of direct BLE communication.
+        It runs as a web application inside the Even Hub app on your phone, which
+        then communicates with your G2 glasses.
+      </p>
+
+      <div class="status">
+        <strong>✅ Advantages of Even Hub SDK:</strong>
+        <ul>
+          <li>Official support from Even Realities</li>
+          <li>No BLE UUID discovery needed</li>
+          <li>High-level API for containers and events</li>
+          <li>Easier development and deployment</li>
+          <li>Automatic updates via Even Hub</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="content">
+      <h2>🐛 Troubleshooting</h2>
+
+      <h3>App Not Loading</h3>
+      <ul>
+        <li>Make sure you're running inside Even Hub app</li>
+        <li>Check that Google Calendar API credentials are configured</li>
+        <li>Verify internet connection</li>
+        <li>Check browser console for errors</li>
+      </ul>
+
+      <h3>Calendar Not Syncing</h3>
+      <ul>
+        <li>Verify Google Calendar API is enabled</li>
+        <li>Check OAuth consent screen configuration</li>
+        <li>Ensure authorized JavaScript origins are correct</li>
+        <li>Try signing out and signing in again</li>
+      </ul>
+
+      <h3>Display Issues</h3>
+      <ul>
+        <li>Text too long? Adjust maxTitleLength in settings</li>
+        <li>Layout broken? Check display composer configuration</li>
+        <li>Events not showing? Verify calendar permissions</li>
+      </ul>
+    </div>
+
+    <div class="content">
+      <h2>📄 License</h2>
+      <p>
+        MIT License - Free to use, modify, and distribute.<br>
+        See LICENSE file for details.
+      </p>
+
+      <h2>🙏 Credits</h2>
+      <ul>
+        <li><strong>Even Realities</strong> - G2 smart glasses and Even Hub SDK</li>
+        <li><strong>EvenChess</strong> - Reference implementation and inspiration</li>
+        <li><strong>Google</strong> - Calendar API</li>
+      </ul>
+    </div>
+
+    <div class="footer">
+      <p>
+        Built with ❤️ for the Even G2 community<br>
+        <a href="https://github.com/harikapadia999/even-g2-calendar-companion" target="_blank">
+          View on GitHub
+        </a>
+      </p>
+    </div>
+  </div>
+
+  <!-- App container (hidden, used by Even Hub) -->
+  <div id="app"></div>
+
+  <!-- Main application script -->
+  <script type="module" src="/src/main.ts"></script>
+</body>
+</html>
